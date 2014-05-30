@@ -21,6 +21,18 @@ try:
 except:
     install_requires.append('argparse')
 
+# Check if we have the privileges to write the completion file by trying
+# to create a file in the target directory.
+data_files = []
+try:
+    test_path = '/etc/bash_completion.d/wifi-write-test'
+    with open(test_path, 'a'):
+        data_files = [('/etc/bash_completion.d/',
+                       ['extras/wifi-completion.bash'])]
+    os.remove(test_path)
+except:
+    pass
+
 version = '1.0.0'
 
 setup(
@@ -46,7 +58,5 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.3",
     ],
-    data_files=[
-        ('/etc/bash_completion.d/', ['extras/wifi-completion.bash']),
-    ]
+    data_files=data_files
 )
